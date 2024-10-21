@@ -62,7 +62,7 @@
                                                                     <br>
                                                                     {{ coment.text }}
                                                                 </div>
-                                                                {% if user.username == 'Administrador' or coment.user == user %} <!-- Contenido que se mostrará si alguna de las condiciones es verdadera -->
+                                                                {% if user.is_staff or coment.user == user %} <!-- Contenido que se mostrará si alguna de las condiciones es verdadera -->
                                                                 <div class="mt-2">
                                                                     <a href="{% url 'apps.posts:comment-update' coment.pk %}" class="btn btn-primary btn-sm">Editar</a>
                                                                     <a href="{% url 'apps.posts:comment-delete' coment.pk %}" class="btn btn-danger btn-sm">Eliminar</a>

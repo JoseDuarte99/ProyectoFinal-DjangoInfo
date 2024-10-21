@@ -1,21 +1,28 @@
-from django.shortcuts import render, redirect
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView
+from django.shortcuts import redirect
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from .models import Post, Comments, Tags, Category
 from .forms import CreatePostForm, UpdatePostForm, CommentsForm
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 
 
+class StaffRequiredMixin:
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_staff:
+            return redirect(reverse_lazy('login'))
+        return super().dispatch(request, *args, **kwargs)
 
 #  --------------------------------------- POSTS ------------------------------------------------
 
+# LISTADO DE POSTS
 class PostListView(ListView):
     model = Post
     template_name = 'posts/posts.html'
     context_object_name = 'posts'
 
 
+# DETALLE DE UN POST
 class PostDetailView(DetailView):
     model = Post
     template_name = 'posts/post_individual.html'
@@ -46,7 +53,8 @@ class PostDetailView(DetailView):
             return self.render_to_response(context)
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+# CREACION DE UN POST
+class PostCreateView(StaffRequiredMixin, CreateView):
     template_name = 'posts/post_create.html'
     form_class = CreatePostForm
     success_url = reverse_lazy('index')  # Cambia 'post_list' por el nombre de tu vista de lista de publicaciones
@@ -61,7 +69,8 @@ class PostCreateView(LoginRequiredMixin, CreateView):
         return super().dispatch(request, *args, **kwargs)
 
 
-class PostUpdateView(LoginRequiredMixin, UpdateView):
+# ACTULIZACION DE UN POST
+class PostUpdateView(StaffRequiredMixin, UpdateView):
     form_class = UpdatePostForm
     template_name = 'posts/post_update.html'
     model = Post
@@ -73,7 +82,9 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
 
-class PostDeleteView(LoginRequiredMixin, DeleteView):
+
+# ELIMINACION DE UN POST
+class PostDeleteView(StaffRequiredMixin, DeleteView):
     model = Post
     template_name = 'posts/post_delete.html'
     success_url = reverse_lazy('apps.posts:posts')
@@ -87,6 +98,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 
 #  --------------------------------------- COMENTARIOS ------------------------------------------------
 
+# CREACION DE UN COMENTARIO
 class CommentCreateView(LoginRequiredMixin, CreateView):
     model = Comments
     form_class = CommentsForm
@@ -98,6 +110,8 @@ class CommentCreateView(LoginRequiredMixin, CreateView):
         form.instance.post_id = self.kwargs['post_id']
         return super().form_valid(form)
 
+
+# ACTUALIZACION DE UN COMENTARIO
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     model = Comments
     form_class = CommentsForm
@@ -111,6 +125,8 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
         queryset = super().get_queryset()
         return queryset.filter(user=self.request.user)
 
+
+# ELIMINACION DE UN COMENTARIO
 class CommentDeleteView(LoginRequiredMixin, DeleteView):
     model = Comments
     template_name = 'posts/comments_delete.html'
@@ -126,14 +142,15 @@ class CommentDeleteView(LoginRequiredMixin, DeleteView):
 
 #  --------------------------------------- CATEGORIAS ------------------------------------------------
 
-# Lista de Categorías
+# LISTA DE CATEGORIAS
 class CategoryListView(ListView):
     model = Category
     template_name = 'posts/category.html'
     context_object_name = 'categorys'
 
-# Categorías
-class CategoryCreateView(LoginRequiredMixin, CreateView):
+
+# CREAR CATEGORIA
+class CategoryCreateView(StaffRequiredMixin, CreateView):
     model = Category
     template_name = 'posts/category_create.html'
     fields = ['name']  # Ajusta los campos según tu modelo Category
@@ -144,8 +161,9 @@ class CategoryCreateView(LoginRequiredMixin, CreateView):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
 
-# Borrar Categorías
-class CategoryDeleteView(LoginRequiredMixin, DeleteView):
+
+# ELIMINAR CATEGORIA
+class CategoryDeleteView(StaffRequiredMixin, DeleteView):
     model = Category
     template_name = 'posts/category_delete.html'
     success_url = reverse_lazy('apps.posts:category')
@@ -155,7 +173,8 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
             raise PermissionDenied
         return super().dispatch(request, *args, **kwargs)
 
-# Post por categorias
+
+# FILTAR POST POR CATEGORIA
 class PostCategoryView(ListView):
     model = Post
     template_name = 'posts/post_category.html'
@@ -166,13 +185,13 @@ class PostCategoryView(ListView):
 
 
 #  --------------------------------------- TAGS ------------------------------------------------
-class TagsListView(ListView):
-    model = Tags
-    template_name = 'taglist.html'
-    context_object_name = 'tags'
+# class TagsListView(ListView):
+#     model = Tags
+#     template_name = 'taglist.html'
+#     context_object_name = 'tags'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['tags'] = Tags.objects.all()
-        context['tags'] = Tags.objects.get(id=self.kwargs['pk'])
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['tags'] = Tags.objects.all()
+#         context['tags'] = Tags.objects.get(id=self.kwargs['pk'])
+#         return context

@@ -2,8 +2,6 @@
 {% load static %}
 {% block content %}
 
-<title> {% block title %} Categorías {% endblock title %} </title>
-
 <!-- Banner Starts Here -->
 <div class="heading-page header-text">
     <section class="page-heading">
@@ -28,14 +26,12 @@
             <h1 class="h2">Categorías</h1>
             <p>Desde aquí puedes elegir los artículos según la categoría que desees</p>
             <!-- Formulario para crear una nueva categoría -->
-                {% if user.is_authenticated %}
-                    {% if user.username == 'Administrador' %}
-                        <form method="post" action="{% url 'apps.posts:category-create' %}">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <button type="submit" class="btn btn-success">Crear</button>
-                        </form>
-                    {% endif %}
+                {% if user.is_staff %}
+                    <form method="post" action="{% url 'apps.posts:category-create' %}">
+                        {% csrf_token %}
+                        {{ form.as_p }}
+                        <button type="submit" class="btn btn-success">Crear</button>
+                    </form>
                 {% endif %}
         </div>  
     </div>
@@ -45,7 +41,9 @@
             <a href="{% url 'apps.posts:post_category' pk=category.pk %}">
                 <h4 class="text-center mt-3 mb-3">{{ category.name }}</h4>
             </a><br>
-                <!-- <p class="text-center"><a class="btn btn-warning" href="{% url 'apps.posts:category_delete' pk=category.pk %}">Eliminar</a></p> -->
+                {% if user.is_staff %}
+                <p class="text-center"><a class="btn btn-danger" href="{% url 'apps.posts:category_delete' pk=category.pk %}">Eliminar</a></p>
+                {% endif %}
         {% empty %}
             <h3 class="text-center mt-3 mb-3">No hay categorías</h3>
         {% endfor %}

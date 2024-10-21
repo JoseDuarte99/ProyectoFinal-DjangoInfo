@@ -1,0 +1,22 @@
+URLS PARA TESTING
+
+
+http://127.0.0.1:8000/
+http://127.0.0.1:8000/post/CreatePost/
+http://127.0.0.1:8000/post/UpdatePost/1/
+http://127.0.0.1:8000/post/DeletePost/1/
+
+
+http://127.0.0.1:8000/post/category_create
+http://127.0.0.1:8000/post/category_delete/1/
+
+http://127.0.0.1:8000/post/comments/1/update/
+http://127.0.0.1:8000/post/comments/1/delete/
+
+http://127.0.0.1:8000/user/password_reset/
+http://127.0.0.1:8000/user/password_reset/done/
+http://127.0.0.1:8000/user/reset/done/
+http://127.0.0.1:8000/user/profile/
+http://127.0.0.1:8000/user/manage-users/
+http://127.0.0.1:8000/user/edit-user/1/
+http://127.0.0.1:8000/user/delete-user/1/

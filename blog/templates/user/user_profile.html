@@ -21,6 +21,16 @@
 </div>
 <!-- Banner End Here -->
 
+{% if user.is_authenticated %}
+    {% if user.username == 'Administrador' %}
+    <div class="post-options">
+        <div class="fila">
+            <a href="{% url 'apps.user:manage_users' %}" class="btn btn-success">Administrador de Usuarios</a>
+        </div>
+    </div>
+    {% endif %}
+{% endif %}
+
 <div class="profile-container">
     <div class="profile-header">
         <img src="{{ user.image.url }}" alt="User Profile Picture">
@@ -37,6 +47,7 @@
         <dd>{{ user.date_joined }}</dd>
     </dl>
 </div>
+
 
 
 

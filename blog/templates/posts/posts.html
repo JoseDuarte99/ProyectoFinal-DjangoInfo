@@ -87,8 +87,7 @@
     </section>
 
 {% else %}
-{% if user.is_authenticated %}
-    {% if user.username == 'Administrador' %}
+{% if user.is_staff  %}
         <div class="post-options">
             <div class="row">
                 <form method="POST" action="{% url 'apps.posts:posts_create' %}">
@@ -97,7 +96,6 @@
                 </form>
             </div>
         </div>
-    {% endif %}
 {% endif %}
 <section class="blog-posts grid-system">
     <div class="container">

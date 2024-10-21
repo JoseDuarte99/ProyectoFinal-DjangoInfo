@@ -1,10 +1,13 @@
-from django.shortcuts import render
 from .forms import ContactAnonymousForm, ContactAuthenticatedForm
 from django.contrib import messages
 from django.views.generic.edit import CreateView
 from django.views.generic import TemplateView
 from django.urls import reverse_lazy
 
+
+#  --------------------------------------- CONTACTO ------------------------------------------------
+
+# CONTACTO INICIAL
 class ContactUsuer(CreateView):
     template_name = 'contact/contact.html'
     success_url = reverse_lazy('apps.contact:contact_success')
@@ -23,7 +26,6 @@ class ContactUsuer(CreateView):
             initial['email'] = self.request.user.email
         return initial
 
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['request'] = self.request
@@ -33,5 +35,7 @@ class ContactUsuer(CreateView):
         messages.success(self.request, 'Consulta enviada con exito.')
         return super().form_valid(form)
 
+
+# CONTACTO EXITOSO
 class ContactSuccess(TemplateView):
     template_name = 'contact/contact_success.html'

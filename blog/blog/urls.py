@@ -26,6 +26,7 @@ from .views import custom_404
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexPostView.as_view(), name='index'),
+    path('about/', AboutView.as_view(), name='about'),
     path('', include('django.contrib.auth.urls')),
     path('post/', include('apps.post.urls')),
     path('contac/', include('apps.contact.urls')),

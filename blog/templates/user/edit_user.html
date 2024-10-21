@@ -1,0 +1,43 @@
+{% extends 'base.html'%}
+
+{% load static %}
+
+{% block content %}
+<!-- Banner Starts Here -->
+<div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        <h4>Editor de Usuarios</h4>
+                        <h2>¡Realiza los cambios que necesites!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<!-- Banner End Here -->
+
+<section class="contact-us">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="down-contact">
+                    <div class="sidebar-heading">
+                        <h2>Editar Usuario</h2>
+                    </div>
+                    <form method="POST">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <br><br>
+                    <button class="btn btn-success" type="submit"> Guardar Cambios</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

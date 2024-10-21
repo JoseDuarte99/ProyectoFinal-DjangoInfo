@@ -1,3 +1,46 @@
+.container_manage{
+	margin: 50px;
+}
+
+/* Estilo para la tabla de usuarios */
+.user-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 18px;
+    text-align: left;
+}
+
+/* Estilo para las cabeceras de la tabla */
+.user-table-header {
+    background-color: #333; /* Cambia este color según tu diseño */
+    color: white;
+    padding: 10px;
+}
+
+/* Estilo para las celdas de la tabla */
+.user-table-cell {
+    padding: 10px;
+    border-bottom: 1px solid #ccc; /* Línea gris clara */
+}
+
+/* Estilo para los enlaces de acción */
+.user-table-link {
+    color: #0066cc; /* Cambia este color según tu diseño */
+    text-decoration: none;
+    margin-right: 10px;
+}
+
+.user-table-link:hover {
+    text-decoration: underline;
+}
+
+/* Estilo para las filas alternas */
+.user-table-row:nth-child(odd) {
+    background-color: #f9f9f9; /* Color de fondo alterno */
+}
+
+
 /* Contenedor de categorías */
 .category-container {
 	display: flex;
@@ -1037,7 +1080,7 @@ footer p a:hover {
 /* About Us */
 
 .about-us {
-	margin-top: 100px;
+	margin-top: 30px;
 	text-align: center;
 }
 
