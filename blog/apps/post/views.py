@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied
 class StaffRequiredMixin:
     def dispatch(self, request, *args, **kwargs):
         if not request.user.is_staff:
-            return redirect(reverse_lazy('login'))
+            return redirect(reverse_lazy('apps.posts:posts'))
         return super().dispatch(request, *args, **kwargs)
 
 #  --------------------------------------- POSTS ------------------------------------------------
@@ -62,11 +62,6 @@ class PostCreateView(StaffRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.username != 'Administrador':
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
 
 
 # ACTULIZACION DE UN POST
@@ -76,11 +71,6 @@ class PostUpdateView(StaffRequiredMixin, UpdateView):
     model = Post
     success_url = reverse_lazy('apps.posts:posts')
     pk_url_kwarg = 'id'
-
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.username != 'Administrador':
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
 
 
 # ELIMINACION DE UN POST
@@ -155,12 +145,6 @@ class CategoryCreateView(StaffRequiredMixin, CreateView):
     template_name = 'posts/category_create.html'
     fields = ['name']  # Ajusta los campos según tu modelo Category
     success_url = reverse_lazy('apps.posts:category')
-    
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.username != 'Administrador':
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
-
 
 # ELIMINAR CATEGORIA
 class CategoryDeleteView(StaffRequiredMixin, DeleteView):
@@ -168,11 +152,6 @@ class CategoryDeleteView(StaffRequiredMixin, DeleteView):
     template_name = 'posts/category_delete.html'
     success_url = reverse_lazy('apps.posts:category')
     
-    def dispatch(self, request, *args, **kwargs):
-        if not request.user.is_authenticated or request.user.username != 'Administrador':
-            raise PermissionDenied
-        return super().dispatch(request, *args, **kwargs)
-
 
 # FILTAR POST POR CATEGORIA
 class PostCategoryView(ListView):
