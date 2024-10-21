@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<title> {% block title %} Categorías {% endblock title %} </title>
+
+<!-- Banner Starts Here -->
+<div class="heading-page header-text">
+    <section class="page-heading">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="text-content">
+                        <h4>Tranquilo</h4>
+                        <h2>¡Nosotros hacemos tu busqueda mas facil!</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+    <!-- Banner Ends Here -->
+
+<section class="container py-5">
+    <div class="row text-center pt-3">
+        <div class="col-lg-6 m-auto">
+            <br><br>
+            <h1 class="h2">Categorías</h1>
+            <p>Desde aquí puedes elegir los artículos según la categoría que desees</p>
+            <!-- Formulario para crear una nueva categoría -->
+                {% if user.is_authenticated %}
+                    {% if user.username == 'Administrador' %}
+                        <form method="post" action="{% url 'apps.posts:category-create' %}">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <button type="submit" class="btn btn-success">Crear</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+        </div>  
+    </div>
+    <div class="category-container">
+        {% for category in categorys %}
+        <div class="category-item">
+            <a href="{% url 'apps.posts:post_category' pk=category.pk %}">
+                <h4 class="text-center mt-3 mb-3">{{ category.name }}</h4>
+            </a><br>
+                <!-- <p class="text-center"><a class="btn btn-warning" href="{% url 'apps.posts:category_delete' pk=category.pk %}">Eliminar</a></p> -->
+        {% empty %}
+            <h3 class="text-center mt-3 mb-3">No hay categorías</h3>
+        {% endfor %}
+        </div>
+    </div>
+</section>
+
+
+
+
+{% endblock %}
+
+
+
+
+
+
